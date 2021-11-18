@@ -293,3 +293,113 @@ base_x %>% mutate(Semaforos = replace(Semaforos, Semaforos==0,"Zero"),
 
 #testando a sintaxe 2
 base_x %>% mutate(Semaforos = replace(Semaforos,1, "AAAAAAA"))
+
+
+
+
+
+###############################################################################
+
+#                                RECODE
+
+###############################################################################
+
+head(base_x)
+
+
+# Praticando o recode - add uma var com base nos valores de outra var
+
+mutate(base_x, Num_Perfil = recode(Perfil,
+                                    "calmo"=0,
+                                    "moderado"=1,
+                                    "agressivo"=2))
+
+
+
+mutate(base_x,Turno = recode(Periodo,
+                              "Manhã"=1,
+                              "Tarde"=2,
+                              "Noite"=3))
+
+
+
+
+###############################################################################
+
+#                                TRANSMUTE
+
+###############################################################################
+
+#permite add var e especificar quais vars existentes serão mantidas no obj 
+
+base_teste <- nova_base
+
+head(base_teste)
+
+inicial <- c("GS","DS","GL","LS","LP","LA","AL","AB","JG","MD")
+
+base_teste <- transmute(base_teste,inicial, observacoes, distancia)
+
+head(base_teste)
+
+
+
+###############################################################################
+
+#                                CUT
+
+###############################################################################
+
+#cut: cria uma 
+
+median(base_teste$distancia)
+
+
+mutate(base_teste,distancia_m = cut(distancia,
+                                    c(0,median(distancia),32),
+                                    c("abaixo","acima")
+                                    )
+       )
+
+
+
+
+# Novo exemplo
+head(nova_base)
+
+
+mutate(nova_base, tempo_m = cut(tempo,
+                                c(0,median(tempo),55),
+                                c("T_inferior","T_superior")
+                                )
+      )
+
+
+
+
+
+#mais uma prática
+head(base_x)
+
+mutate(base_x, idade_m = cut(idade,
+                             c(0,median(idade),62),
+                             c("I_Inferior","I_Superior")
+                             )
+       )
+median(base_x$Idade)
+
+
+
+
+
+
+#mais um exemplo utilizando labels para dar nome aos intervalos
+mutate(base_x, idade_m = cut(idade,
+                             c(0,median(idade),62),
+                             labels = c("Jovem","Adulto")
+                             )
+       )
+
+
+
+
